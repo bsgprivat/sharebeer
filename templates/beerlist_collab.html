@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{%  block content %}
+<div class="content-mid">
+    <h2>{{ list }}</h2>
+    <p class="lead">
+        {{ list.info }}
+    </p>
+
+    <p>
+        <h2>Beers in list</h2>
+        <br>
+        {%  if list.beers %}
+        <ul>
+            {%  for beer in list.beers.all %}
+                <li>{{ beer }}</li>
+            {%  endfor %}
+        </ul>
+        {%  endif %}
+    </p>
+    <p>
+        <h2>Claimed Beers</h2>
+
+    {%  for listbeer,claims in claimed_beers.items %}
+        <table style="border: 2px solid gray; width: 70%; margin: 1em; padding-left: 2em">
+            <tr style="padding: 1em">
+                <th colspan="3">
+                    <h4>{{ listbeer.beer }}</h4>
+                </th>
+            </tr>
+            <tr>
+            <th>User</th>
+            <th>qty</th>
+            <th>agg. price</th>
+            </tr>
+            {%  for claim in claims %}
+                <tr>
+                    <th>
+                        {{ claim.0 }}
+                    </th>
+                    <td>
+                        {{ claim.1 }}
+                    </td>
+                    <td>
+                        {{ claim.2 }}
+                    </td>
+                </tr>
+                {%  endfor %}
+            <tr>
+                <td>
+                   Total Claimed
+                </td>
+                <th>
+                    {{ listbeer.get_total_claimed }}
+                </th>
+                <th>
+                    {{ listbeer.get_actual_price }}
+                </th>
+            </tr>
+        {%  if listbeer.qty %}
+            <tr>
+                <td>
+                   Total available
+                </td>
+                <th>
+                    {{ listbeer.qty }}
+                </th>
+                <th>
+                    {{ listbeer.get_full_price }}
+                </th>
+            </tr>
+        {%  endif %}
+        </table>
+    {%  endfor %}
+    </p>
+
+
+    <p class="lead">
+        Total Beers claimed: {{ total_claimed }}<br>
+        Total (aprox) weight: {{ total_weight }} grams<br>
+        Total Beer price: {{ total_price }} SEK
+    </p>
+
+
+</div>
+{%  endblock content %}
